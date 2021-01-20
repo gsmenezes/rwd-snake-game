@@ -12,7 +12,8 @@ let food = {
   y: Math.floor(Math.random() * 15 + 1) * box
 };
 
-function createBG() {
+// Funções de criação: Box, Snake and Food
+function createBox() {
   context.fillStyle = "black";
   context.fillRect(0, 0, 16 * box, 16 * box);
 }
@@ -29,8 +30,9 @@ function createFood() {
   context.fillRect(food.x, food.y, box, box);
 }
 
-document.addEventListener("keydown", update);
 
+// função para direções com evento de clique das setas
+document.addEventListener("keydown", update);
 function update(event) {
   if (event.keyCode == 37 && direction != "right") direction = "left";
   if (event.keyCode == 38 && direction != "down") direction = "up";
@@ -38,6 +40,7 @@ function update(event) {
   if (event.keyCode == 40 && direction != "up") direction = "down";
 }
 
+// função para iniciar o jogo
 function startGame() {
   // Faz a cobrinha aparecer novamente na tela quando 'passa' a parede do box
   if (snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
@@ -45,7 +48,15 @@ function startGame() {
   if (snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
   if (snake[0].y < 0 && direction == "up") snake[0].y = 16 * box;
 
-  createBG();
+  // Encerra o jogo quando a cabeça da cobra encosta em algum lugar do corpo
+  for(i = 1; i < snake.length; i++){
+    if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+      clearInterval(game);
+      alert('Game over =/');
+    }
+  }
+
+  createBox();
   createSnake();
   createFood();
 
@@ -57,7 +68,12 @@ function startGame() {
   if (direction == "up") snakeY -= box;
   if (direction == "down") snakeY += box;
 
-  snake.pop();
+  if(snakeX != food.x || snakeY != food.y){
+    snake.pop();
+  } else {
+    food.x = Math.floor(Math.random() * 15 + 1) * box;
+    food.y = Math.floor(Math.random() * 15 + 1) * box;
+  }
 
   let newHead = {
     x: snakeX,
