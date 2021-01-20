@@ -1,5 +1,6 @@
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
+let button = document.getElementById("btn");
 let box = 32; //tamanho de cada quadrado
 let snake = [];
 snake[0] = {
@@ -53,6 +54,7 @@ function startGame() {
     if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
       clearInterval(game);
       alert('Game over =/');
+      button.removeAttribute('disabled');
     }
   }
 
@@ -81,6 +83,10 @@ function startGame() {
   };
 
   snake.unshift(newHead);
+}
+
+function startAgain(){
+  window.location.reload();
 }
 
 let game = setInterval(startGame, 100);
